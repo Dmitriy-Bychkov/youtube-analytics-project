@@ -9,11 +9,9 @@ class Channel:
     api_key: str = os.getenv('YT_API_KEY')
     youtube = build('youtube', 'v3', developerKey=api_key)
 
-
     @classmethod
     def get_service(cls):
         return cls.youtube
-
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала.
@@ -29,51 +27,40 @@ class Channel:
         self.video_count = channel['items'][0]['statistics']['videoCount']
         self.views_count = channel['items'][0]['statistics']['viewCount']
 
-
     def __str__(self):
         return f'{self.title} ({self.url})'
-
 
     def __add__(self, other):
         return int(self.subscriber_count) + int(other.subscriber_count)
 
-
     def __sub__(self, other):
         return int(self.subscriber_count) - int(other.subscriber_count)
-
 
     def __gt__(self, other):
         return int(self.subscriber_count) > int(other.subscriber_count)
 
-
     def __ge__(self, other):
         return int(self.subscriber_count) >= int(other.subscriber_count)
-
 
     def __lt__(self, other):
         return int(self.subscriber_count) < int(other.subscriber_count)
 
-
     def __le__(self, other):
         return int(self.subscriber_count) <= int(other.subscriber_count)
 
-
     def __eq__(self, other):
         return int(self.subscriber_count) == int(other.subscriber_count)
-
 
     @property
     def channel_id(self):
         return self.__channel_id
 
-
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        channel = Channel.get_service().channels().list(id=channel_id, part='snippet,statistics').execute()
+        channel = Channel.get_service().channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         all_info = json.dumps(channel, indent=2, ensure_ascii=False)
 
         print(all_info)
-
 
     def to_json(self, new_file):
         final_dict = {}

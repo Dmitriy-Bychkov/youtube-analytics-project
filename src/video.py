@@ -1,7 +1,7 @@
-from src.channel import Channel
+from src.apimixin import APIMixin
 
 
-class Video(Channel):
+class Video(APIMixin):
 
     def __init__(self, video_id: str) -> None:
         self.video_id = video_id

@@ -9,10 +9,18 @@ class Video(APIMixin):
         video_response = self.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                           id=self.video_id
                                                           ).execute()
-        self.video_title = video_response['items'][0]['snippet']['title']
-        self.url = f'https://youtu.be/{self.video_id}'
-        self.view_count = video_response['items'][0]['statistics']['viewCount']
-        self.like_count = video_response['items'][0]['statistics']['likeCount']
+
+        try:
+            self.video_title = video_response['items'][0]['snippet']['title']
+            self.url = f'https://youtu.be/{self.video_id}'
+            self.view_count = video_response['items'][0]['statistics']['viewCount']
+            self.like_count = video_response['items'][0]['statistics']['likeCount']
+
+        except IndexError:
+            self.video_title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
 
     def __str__(self):
         return f'{self.video_title}'
